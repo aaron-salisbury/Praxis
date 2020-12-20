@@ -20,7 +20,7 @@ namespace Praxis.Console
                 }
                 else
                 {
-                    System.Console.WriteLine("Not Supported Exception: Engine does not support an interface of type '" + initialSetupInput + "'.");
+                    System.Console.WriteLine($"Not Supported Exception: Engine does not support an interface of type '{initialSetupInput}'.");
                 }
             }
 
