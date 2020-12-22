@@ -16,7 +16,7 @@ namespace Praxis.Engine
         internal const string NAME = "Praxis";
         internal const string AUTHOR = "Aaron Salisbury";
         private const string FEN_START_POSITIONS = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-        private const int NUM_MEN_ENDGAME_ANALYSIS = 5;
+        private const int NUM_MEN_ENDGAME_ANALYSIS = 7; // SyzygyTablebaseProber
 
         internal static ILogger Logger { get; set; }
 

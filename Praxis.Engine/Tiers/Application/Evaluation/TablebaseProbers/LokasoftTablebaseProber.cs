@@ -1,4 +1,5 @@
-﻿using Praxis.Engine.Tiers.Data;
+﻿using Praxis.Engine.Tiers.Application.BoardRepresentation;
+using Praxis.Engine.Tiers.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,25 +12,54 @@ namespace Praxis.Engine.Tiers.Application.Evaluation
     /// </summary>
     internal class LokasoftTablebaseProber: BaseTablebaseProber
     {
+        private const string REQUEST_URI = "http://www.lokasoft.nl/tbweb/tbapi.asp";
+        private const string ACTION_URL = "http://lokasoft.org/action/TB2ComObj.GetBestMoves";
+
         internal LokasoftTablebaseProber()
         {
             RequiresInternet = true;
             NumberPieceMax = 5;
-            RequestType = RequestTypes.SOAP;
-            RequestURI = "http://www.lokasoft.nl/tbweb/tbapi.asp";
-            ActionURL = "http://lokasoft.org/action/TB2ComObj.GetBestMoves";
         }
 
-        internal override Dictionary<int, List<string>> GetScoredMoves(Engine engine)
+        internal override Move GetBestMove(Engine engine)
         {
-            BuildRequestContent(engine.FEN);
+            string requestContent = BuildRequestContent(engine.FEN);
 
-            return ConvertResponseToScoredMoves(MakeRequestForMoves());
+            string response = WebServices.GetSOAPResponse(ACTION_URL, requestContent, new Uri(REQUEST_URI)).Result;
+
+            Dictionary<int, List<string>> scoredMoves = GetScoredMoves(response);
+
+            if (scoredMoves != null)
+            {
+                // Lokasoft "score is given as distance to mat, or 0 when the position is a draw.".
+                string bestMove = scoredMoves
+                    .Where(mbs => mbs.Key > 0)
+                    .OrderBy(mbs => mbs.Key)
+                    .Select(mbs => mbs.Value.FirstOrDefault()).FirstOrDefault();
+
+                if (string.IsNullOrEmpty(bestMove))
+                {
+                    bestMove = scoredMoves
+                        .Where(mbs => mbs.Key == 0)
+                        .Select(mbs => mbs.Value.FirstOrDefault()).FirstOrDefault();
+                }
+
+                if (string.IsNullOrEmpty(bestMove))
+                {
+                    bestMove = scoredMoves
+                        .OrderByDescending(mbs => Math.Abs(mbs.Key))
+                        .Select(mbs => mbs.Value.FirstOrDefault()).FirstOrDefault();
+                }
+
+                return Move.ConvertAlgebraicToMove(bestMove, engine);
+            }
+
+            return null;
         }
 
-        protected override void BuildRequestContent(string fen)
+        private string BuildRequestContent(string fen)
         {
-            RequestContent = string.Format(@"<soapenv:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:mes=""http://lokasoft.org/message/"">
+            return string.Format(@"<soapenv:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:mes=""http://lokasoft.org/message/"">
                     <soapenv:Body>
                         <mes:GetBestMoves soapenv:encodingStyle=""http://schemas.xmlsoap.org/soap/encoding/"">
                             <fen xsi:type=""xsd:string"">{0}</fen>
@@ -38,20 +68,20 @@ namespace Praxis.Engine.Tiers.Application.Evaluation
                 </soapenv:Envelope>", fen);
         }
 
-        protected override string MakeRequestForMoves()
+        private Dictionary<int, List<string>> GetScoredMoves(string response)
         {
-            return WebServices.GetSOAPResponse(ActionURL, RequestContent, new Uri(RequestURI)).Result;
-        }
+            if (string.IsNullOrEmpty(response))
+            {
+                return null;
+            }
 
-        protected override Dictionary<int, List<string>> ConvertResponseToScoredMoves(string serviceResponce)
-        {
             const string RESULTS_NODE = "Result";
 
             Dictionary<int, List<string>> movesByScores = new Dictionary<int, List<string>>();
 
             try
             {
-                XDocument responseXML = XDocument.Parse(serviceResponce);
+                XDocument responseXML = XDocument.Parse(response);
 
                 XElement resultElement = responseXML.Descendants(RESULTS_NODE).FirstOrDefault();
                 string resultValue = resultElement.Value;

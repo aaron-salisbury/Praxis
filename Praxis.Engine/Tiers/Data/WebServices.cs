@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,19 +31,13 @@ namespace Praxis.Engine.Tiers.Data
             }
         }
 
-        internal static async Task<string> GetCurlResponse(string curlURL, string content)
+        internal static async Task<string> GetCurlResponse(string curlURL)
         {
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    FormUrlEncodedContent encodedContent = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("text", content) });
-
-                    using (HttpResponseMessage message = await client.PostAsync(curlURL, encodedContent))
-                    using (var reader = new StreamReader(await message.Content.ReadAsStreamAsync()))
-                    {
-                        return await reader.ReadToEndAsync();
-                    }
+                    return await client.GetStringAsync(curlURL);
                 }
             }
             catch (Exception e)
