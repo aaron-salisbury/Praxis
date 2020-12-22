@@ -1,8 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PackageProjectUrl>https://github.com/aaron-salisbury/Praxis</PackageProjectUrl>
+    <Authors>Aaron Salisbury</Authors>
+    <Company>Amalgamate Labs</Company>
+    <Product>Praxis Chess Engine</Product>
+    <Description>Praxis is a chess engine written in C#. The project is a console application whose executable you would select using a chess interface, such as Arena.</Description>
+    <Copyright>2020</Copyright>
+    <RepositoryUrl>https://github.com/aaron-salisbury/Praxis</RepositoryUrl>
+    <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+    <PublishSingleFile>true</PublishSingleFile>
+    <ApplicationIcon>praxis.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
