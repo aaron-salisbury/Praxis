@@ -1,13 +1,13 @@
-﻿using Praxis.Engine.Tiers.Application;
-using Praxis.Engine.Tiers.Application.BoardRepresentation;
-using Praxis.Engine.Tiers.Application.BoardRepresentation.Pieces;
-using Praxis.Engine.Tiers.Application.Evaluation;
-using Praxis.Engine.Tiers.Data;
-using Praxis.Engine.Tiers.Presentation;
+﻿using Praxis.Engine.Application;
+using Praxis.Engine.Application.BoardRepresentation;
+using Praxis.Engine.Application.BoardRepresentation.Pieces;
+using Praxis.Engine.Application.Evaluation;
+using Praxis.Engine.Data;
+using Praxis.Engine.Presentation;
 using Serilog;
 using System;
 using System.Collections.Generic;
-using static Praxis.Engine.Tiers.Application.Types;
+using static Praxis.Engine.Application.Types;
 
 namespace Praxis.Engine
 {

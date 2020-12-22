@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Tiers\Data\EcoClassifications.xml" />
+    <None Remove="Data\EcoClassifications.xml" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Tiers\Data\EcoClassifications.xml" />
+    <EmbeddedResource Include="Data\EcoClassifications.xml" />
   </ItemGroup>
 
   <ItemGroup>
