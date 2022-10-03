@@ -1,9 +1,9 @@
-﻿using Praxis.Engine.Application.BoardRepresentation;
+﻿using Praxis.Engine.Win98.Application.BoardRepresentation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Praxis.Engine.Application.Evaluation
+namespace Praxis.Engine.Win98.Application.Evaluation
 {
     internal class OpeningMoveEvaluator : MoveEvaluator
     {
