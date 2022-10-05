@@ -1,13 +1,18 @@
 ﻿using Praxis.Engine.Win98.Application;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Xml.Linq;
+using System.Reflection;
+using System.Xml;
 
 namespace Praxis.Engine.Win98.Data
 {
     class Access
     {
+        private const string EMBEDDED_ECO_FILENAME = "Praxis.Engine.Win98.Data.EcoClassifications.xml";
+        private const string CLASSIFICATION_ELEMENT_NAME = "Classification";
+
         internal static bool FENRecordIsValid(string fenRecord)
         {
             if (string.IsNullOrEmpty(fenRecord))
@@ -91,22 +96,23 @@ namespace Praxis.Engine.Win98.Data
             {
                 List<Opening> openings = new List<Opening>(10231);
 
-                XElement ecoCodesXML = XElement.Parse(Properties.Resources.EcoClassifications);
+                XmlTextReader reader = new XmlTextReader(new StringReader(GetEmbeddedResourceText(EMBEDDED_ECO_FILENAME)));
+                reader.ReadToFollowing(CLASSIFICATION_ELEMENT_NAME);
 
-                foreach (XElement openingElement in ecoCodesXML.Elements("Classification"))
+                do
                 {
-                    string code = (string)openingElement.Attribute("code");
+                    string code = reader.GetAttribute("code");
 
                     if (!code.Equals("A00") && !code.Equals("B00"))
                     {
                         openings.Add(new Opening()
                         {
                             Code = code,
-                            Name = (string)openingElement.Attribute("name"),
-                            Value = openingElement.Value
+                            Name = reader.GetAttribute("name"),
+                            Value = reader.ReadElementContentAsString()
                         });
                     }
-                }
+                } while (reader.ReadToFollowing(CLASSIFICATION_ELEMENT_NAME));
 
                 return openings.OrderBy(opening => opening.Value.Length).ToList();
             }
@@ -115,6 +121,19 @@ namespace Praxis.Engine.Win98.Data
                 Engine.Logger.Error($"Failed to retrieve ECO Classifications: {e.Message}");
                 return null;
             }
+        }
+
+        private static string GetEmbeddedResourceText(string filename)
+        {
+            string result = string.Empty;
+
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(filename))
+            using (StreamReader streamReader = new StreamReader(stream))
+            {
+                result = streamReader.ReadToEnd();
+            }
+
+            return result;
         }
     }
 }
