@@ -24,9 +24,9 @@ namespace Praxis.Engine.Win98.Application.Evaluation
 
         internal override Move GetBestMove(Engine engine)
         {
-            string requestContent = BuildRequestContent(engine.FEN);
+            string requestSoapEnvelope = BuildRequestSoapEnvelope(engine.FEN);
 
-            string response = WebServices.GetSOAPResponse(ACTION_URL, requestContent, new Uri(REQUEST_URI)).Result;
+            string response = WebServices.GetSOAPResponse(ACTION_URL, requestSoapEnvelope, new Uri(REQUEST_URI));
 
             Dictionary<int, List<string>> scoredMoves = GetScoredMoves(response);
 
@@ -58,7 +58,7 @@ namespace Praxis.Engine.Win98.Application.Evaluation
             return null;
         }
 
-        private string BuildRequestContent(string fen)
+        private string BuildRequestSoapEnvelope(string fen)
         {
             return string.Format(@"<soapenv:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:mes=""http://lokasoft.org/message/"">
                     <soapenv:Body>

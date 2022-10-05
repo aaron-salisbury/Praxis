@@ -7,14 +7,14 @@ namespace Praxis.Engine.Data
 {
     class WebServices
     {
-        internal static async Task<string> GetSOAPResponse(string actionURL, string content, Uri requestUri)
+        internal static async Task<string> GetSOAPResponseAsync(string actionURL, string soapEnvelope, Uri requestUri)
         {
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.Add("SOAPAction", actionURL);
-                    StringContent httpContent = new StringContent(content, Encoding.UTF8, "text/xml");
+                    StringContent httpContent = new StringContent(soapEnvelope, Encoding.UTF8, "text/xml");
 
                     using (HttpResponseMessage message = await client.PostAsync(requestUri, httpContent))
                     {
@@ -31,7 +31,7 @@ namespace Praxis.Engine.Data
             }
         }
 
-        internal static async Task<string> GetCurlResponse(string curlURL)
+        internal static async Task<string> GetCurlResponseAsync(string curlURL)
         {
             try
             {

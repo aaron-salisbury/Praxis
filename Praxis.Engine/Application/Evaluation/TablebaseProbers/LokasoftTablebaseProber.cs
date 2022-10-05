@@ -25,7 +25,7 @@ namespace Praxis.Engine.Application.Evaluation
         {
             string requestContent = BuildRequestContent(engine.FEN);
 
-            string response = WebServices.GetSOAPResponse(ACTION_URL, requestContent, new Uri(REQUEST_URI)).Result;
+            string response = WebServices.GetSOAPResponseAsync(ACTION_URL, requestContent, new Uri(REQUEST_URI)).Result;
 
             Dictionary<int, List<string>> scoredMoves = GetScoredMoves(response);
 
