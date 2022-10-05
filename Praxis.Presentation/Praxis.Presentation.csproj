@@ -7,7 +7,7 @@
     <ProjectGuid>{B32EEF5C-A1BD-43FD-BF87-AF5D2C4FD6B2}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>Praxis.Presentation</RootNamespace>
-    <AssemblyName>Praxis_Chess_Engine_win9x</AssemblyName>
+    <AssemblyName>PraxisChessEngine_win9x</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
