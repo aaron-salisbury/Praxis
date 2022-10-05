@@ -2,8 +2,9 @@
 using Praxis.Engine.Win98.Data;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Xml.Linq;
+using System.Xml;
 
 namespace Praxis.Engine.Win98.Application.Evaluation
 {
@@ -81,10 +82,10 @@ namespace Praxis.Engine.Win98.Application.Evaluation
 
             try
             {
-                XDocument responseXML = XDocument.Parse(response);
+                XmlTextReader reader = new XmlTextReader(new StringReader(response));
+                reader.ReadToFollowing(RESULTS_NODE);
 
-                XElement resultElement = responseXML.Descendants(RESULTS_NODE).FirstOrDefault();
-                string resultValue = resultElement.Value;
+                string resultValue = reader.ReadElementContentAsString();
                 string[] movesAndScores = resultValue.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries);
 
                 for (int i = 0; i < movesAndScores.Length; i += 2)
