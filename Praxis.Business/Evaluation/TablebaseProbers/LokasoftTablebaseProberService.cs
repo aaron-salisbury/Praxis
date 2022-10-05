@@ -9,21 +9,15 @@ using System.Xml;
 
 namespace Praxis.Business.Evaluation.TablebaseProbers
 {
-    /// <summary>
-    /// Tablebase WebService Documentation: http://www.lokasoft.nl/tbapi.aspx
-    /// </summary>
-    internal class LokasoftTablebaseProber: BaseTablebaseProber
+    // API Documentation: http://www.lokasoft.nl/tbapi.aspx
+    internal class LokasoftITablebaseProberService : ITablebaseProberService
     {
         private const string REQUEST_URI = "http://www.lokasoft.nl/tbweb/tbapi.asp";
         private const string ACTION_URL = "http://lokasoft.org/action/TB2ComObj.GetBestMoves";
 
-        internal LokasoftTablebaseProber()
-        {
-            RequiresInternet = true;
-            NumberPieceMax = 5;
-        }
+        public int NumberPieceMax() => 5;
 
-        internal override Move GetBestMove(Engine engine)
+        public Move GetBestMove(Engine engine)
         {
             string requestSoapEnvelope = BuildRequestSoapEnvelope(engine.FEN);
 

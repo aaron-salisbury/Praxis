@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Praxis.Business.Evaluation
 {
-    internal class MiddleGameMoveEvaluator : MoveEvaluator
+    internal class MiddleGameMoveEvaluator : BaseMoveEvaluator
     {
         internal MiddleGameMoveEvaluator(Engine engine) : base(engine) { }
 

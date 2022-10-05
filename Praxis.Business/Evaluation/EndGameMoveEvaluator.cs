@@ -3,13 +3,13 @@ using Praxis.Business.Evaluation.TablebaseProbers;
 
 namespace Praxis.Business.Evaluation
 {
-    internal class EndGameMoveEvaluator : MoveEvaluator
+    internal class EndGameMoveEvaluator : BaseMoveEvaluator
     {
-        internal BaseTablebaseProber TablebaseProber { get; set; }
+        internal ITablebaseProberService TablebaseProber { get; set; }
 
         internal EndGameMoveEvaluator(Engine engine) : base(engine)
         {
-            TablebaseProber = new SyzygyTablebaseProber();
+            TablebaseProber = new SyzygyTablebaseProberService();
         }
 
         internal override Move GetBestMove()

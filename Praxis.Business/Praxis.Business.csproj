@@ -57,11 +57,11 @@
     <Compile Include="Engine.cs" />
     <Compile Include="Evaluation\EndGameMoveEvaluator.cs" />
     <Compile Include="Evaluation\MiddleGameMoveEvaluator.cs" />
-    <Compile Include="Evaluation\MoveEvaluator.cs" />
+    <Compile Include="Evaluation\BaseMoveEvaluator.cs" />
     <Compile Include="Evaluation\OpeningMoveEvaluator.cs" />
-    <Compile Include="Evaluation\TablebaseProbers\BaseTablebaseProber.cs" />
-    <Compile Include="Evaluation\TablebaseProbers\LokasoftTablebaseProber.cs" />
-    <Compile Include="Evaluation\TablebaseProbers\SyzygyTablebaseProber.cs" />
+    <Compile Include="Evaluation\TablebaseProbers\ITablebaseProberService.cs" />
+    <Compile Include="Evaluation\TablebaseProbers\LokasoftTablebaseProberService.cs" />
+    <Compile Include="Evaluation\TablebaseProbers\SyzygyTablebaseProberService.cs" />
     <Compile Include="Helpers\FENVerifier.cs" />
     <Compile Include="Helpers\OpeningEvaluator.cs" />
     <Compile Include="Player.cs" />

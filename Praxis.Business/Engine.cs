@@ -198,7 +198,7 @@ namespace Praxis.Business
         internal Protocols CommunicationType { get; set; }
         internal CommunicationProtocol CommunicationProtocol { get; set; }
         internal Random RandomGenerator { get; set; }
-        internal MoveEvaluator MoveEvaluator { get; set; }
+        internal BaseMoveEvaluator MoveEvaluator { get; set; }
         internal List<Opening> Openings { get; set; }
 
         /// <summary>

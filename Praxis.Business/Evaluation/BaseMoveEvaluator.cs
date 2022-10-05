@@ -2,11 +2,11 @@
 
 namespace Praxis.Business.Evaluation
 {
-    internal abstract class MoveEvaluator
+    internal abstract class BaseMoveEvaluator
     {
         internal Engine Engine { get; set; }
 
-        internal MoveEvaluator(Engine engine)
+        internal BaseMoveEvaluator(Engine engine)
         {
             Engine = engine;
         }

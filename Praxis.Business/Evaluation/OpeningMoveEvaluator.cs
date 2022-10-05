@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Praxis.Business.Evaluation
 {
-    internal class OpeningMoveEvaluator : MoveEvaluator
+    internal class OpeningMoveEvaluator : BaseMoveEvaluator
     {
         // theboardgameguide.com/best-chess-openings/
         private readonly Dictionary<int, string> _rankedWhiteOpenings = new Dictionary<int, string>()

@@ -6,20 +6,14 @@ using System;
 
 namespace Praxis.Business.Evaluation.TablebaseProbers
 {
-    /// <summary>
-    /// Tablebase WebService Documentation: https://github.com/niklasf/lila-tablebase#http-api
-    /// </summary>
-    internal class SyzygyTablebaseProber : BaseTablebaseProber
+    // API Documentation: https://github.com/niklasf/lila-tablebase#http-api
+    internal class SyzygyTablebaseProberService : ITablebaseProberService
     {
         private const string CURL_URL = "http://tablebase.lichess.ovh/standard";
 
-        internal SyzygyTablebaseProber()
-        {
-            RequiresInternet = true;
-            NumberPieceMax = 7;
-        }
+        public int NumberPieceMax() => 7;
 
-        internal override Move GetBestMove(Engine engine)
+        public Move GetBestMove(Engine engine)
         {
             string requestContent = $"?fen={engine.FEN.Replace(" ", "_")}";
 
