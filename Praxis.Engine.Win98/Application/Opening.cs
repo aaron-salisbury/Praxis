@@ -1,8 +1,5 @@
 ﻿using Praxis.Engine.Win98.Application.ToolKit;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using static Praxis.Engine.Win98.Application.Types;
 
 namespace Praxis.Engine.Win98.Application
@@ -20,22 +17,33 @@ namespace Praxis.Engine.Win98.Application
 
         internal static bool PotentialOpeningsExist(Engine engine)
         {
-            return engine.Openings
-                .AsQueryable()
-                .Any(OpeningBuildsUponSANPredicate(engine.SAN));
+            bool potentialOpeningsExist = false;
+
+            foreach (Opening opening in engine.Openings)
+            {
+                if (opening.Value.StartsWith(engine.SAN) && opening.Value.CountPeriods() > engine.SAN.CountPeriods())
+                {
+                    potentialOpeningsExist = true;
+                    break;
+                }
+            }
+
+            return potentialOpeningsExist;
         }
 
         internal static List<Opening> GetPotentialOpenings(Engine engine)
         {
-            return engine.Openings
-                .AsQueryable()
-                .Where(OpeningBuildsUponSANPredicate(engine.SAN))
-                .ToList();
-        }
+            List<Opening> potentialOpenings = new List<Opening>();
 
-        private static Expression<Func<Opening, bool>> OpeningBuildsUponSANPredicate(string san)
-        {
-            return (opening => opening.Value.StartsWith(san) && opening.Value.CountPeriods() > san.CountPeriods());
+            foreach (Opening opening in engine.Openings)
+            {
+                if (opening.Value.StartsWith(engine.SAN) && opening.Value.CountPeriods() > engine.SAN.CountPeriods())
+                {
+                    potentialOpenings.Add(opening);
+                }
+            }
+
+            return potentialOpenings;
         }
     }
 }
