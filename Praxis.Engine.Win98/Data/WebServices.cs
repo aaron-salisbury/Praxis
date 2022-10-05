@@ -29,24 +29,11 @@ namespace Praxis.Engine.Win98.Data
                 IAsyncResult asyncResult = webRequest.BeginGetResponse(null, null);
                 asyncResult.AsyncWaitHandle.WaitOne();
 
-                using (WebResponse webResponse = webRequest.EndGetResponse(asyncResult))
-                using (StreamReader responseReader = new StreamReader(webResponse.GetResponseStream()))
+                using (WebResponse response = webRequest.EndGetResponse(asyncResult))
+                using (StreamReader responseReader = new StreamReader(response.GetResponseStream()))
                 {
                     return responseReader.ReadToEnd();
                 }
-
-                //using (HttpClient client = new HttpClient())
-                //{
-                //    client.DefaultRequestHeaders.Add("SOAPAction", actionURL);
-                //    StringContent httpContent = new StringContent(content, Encoding.UTF8, "text/xml");
-
-                //    using (HttpResponseMessage message = await client.PostAsync(requestUri, httpContent))
-                //    {
-                //        byte[] soapResponseData = await message.Content.ReadAsByteArrayAsync();
-
-                //        return Encoding.UTF8.GetString(soapResponseData, 0, soapResponseData.Length);
-                //    }
-                //}
             }
             catch (Exception e)
             {
@@ -55,13 +42,16 @@ namespace Praxis.Engine.Win98.Data
             }
         }
 
-        internal static async Task<string> GetCurlResponse(string curlURL)
+        internal static string GetCurlResponse(string curlURL)
         {
             try
             {
-                using (HttpClient client = new HttpClient())
+                WebRequest webRequest = WebRequest.Create(curlURL);
+
+                using (WebResponse response = webRequest.GetResponse())
+                using (StreamReader responseReader = new StreamReader(response.GetResponseStream()))
                 {
-                    return await client.GetStringAsync(curlURL);
+                    return responseReader.ReadToEnd();
                 }
             }
             catch (Exception e)

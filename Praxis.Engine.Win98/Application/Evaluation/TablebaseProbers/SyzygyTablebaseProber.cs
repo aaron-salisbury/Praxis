@@ -24,7 +24,7 @@ namespace Praxis.Engine.Win98.Application.Evaluation
 
             string curl = $"{CURL_URL}{requestContent}";
 
-            string response = WebServices.GetCurlResponse(curl).Result;
+            string response = WebServices.GetCurlResponse(curl);
 
             try
             {
