@@ -20,10 +20,10 @@ namespace Praxis.DataAccess
             {
                 List<Opening> openings = new List<Opening>(10231);
 
+                #region System.Xml Version
                 XmlTextReader reader = new XmlTextReader(new StringReader(GetEmbeddedResourceText(EMBEDDED_ECO_FILENAME)));
                 reader.ReadToFollowing(CLASSIFICATION_ELEMENT_NAME);
 
-                #region System.Xml Version
                 do
                 {
                     string code = reader.GetAttribute("code");
